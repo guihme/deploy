@@ -1,0 +1,38 @@
+version: '3.5'
+services:
+
+  scheduling:
+    container_name: scheduling
+    image: scheduling:1.0.0
+    build: .
+    ports:
+        - 4140:4140
+    volumes:
+      - .:/scheduling
+      - /scheduling/node_modules
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:14.1-alpine3.15
+    container_name: postgresSQL
+    ports:
+      - "5431:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=scheduling
+    volumes:
+      - .:/code
+
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    restart: always
+    
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@root.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+
