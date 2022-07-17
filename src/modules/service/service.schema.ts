@@ -5,7 +5,12 @@ class createServiceProps {
     example: 'Corte',
   })
   name: string;
-
+  
+ @ApiProperty({
+    example: '501695c6-78bd-4610-a86c-9511ac61d8dc',
+  })
+  customer_id: string;
+  
   @ApiProperty({
     example: '20,00',
   })
