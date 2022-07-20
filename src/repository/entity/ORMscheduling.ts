@@ -13,7 +13,7 @@ export class ORMScheduling {
   @Column({ type: 'varchar', length: 64, nullable: false })
   service_id!: string;
 
-  @Column({ type: 'timestamp', nullable: false })
+  @Column({ type: 'timestamp', nullable: false, unique: true })
   date!: Date;
 
   @Column({ type: 'boolean', nullable: false })
@@ -27,7 +27,7 @@ export class ORMScheduling {
     entity.service_id = instance.service_id;
     entity.date = instance.date;
     entity.is_canceled = instance.is_canceled;
-    
+
     return entity;
   }
 
@@ -41,7 +41,7 @@ export class ORMScheduling {
     };
 
     const buildScheduling = Scheduling.build(retrivedData);
-    if(buildScheduling.isFailure) {
+    if (buildScheduling.isFailure) {
       throw buildScheduling.error;
     }
     return buildScheduling.getValue();
