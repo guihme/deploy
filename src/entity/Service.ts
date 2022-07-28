@@ -8,31 +8,36 @@ export interface CreateServiceProps {
   name: string;
   price: string;
   description: string;
+  image?: string;
 }
 
-interface ServiceProps extends CreateServiceProps{
+interface ServiceProps extends CreateServiceProps {
   id: string;
 }
 
-export class Service{
-  constructor(protected props: ServiceProps){
+export class Service {
+  constructor(protected props: ServiceProps) {
     this.props = props;
   }
 
-  get customer_id(): string{
+  get customer_id(): string {
     return this.props.customer_id;
   }
 
-  get name(): string{
+  get name(): string {
     return this.props.name;
   }
 
-  get price(): string{
+  get price(): string {
     return this.props.price;
   }
 
-  get description(): string{
+  get description(): string {
     return this.props.description;
+  }
+
+  get image(): string | undefined {
+    return this.props.image;
   }
 
   static validate(data: ServiceProps): Result<ServiceProps> {
@@ -42,13 +47,14 @@ export class Service{
       customer_id: Joi.string().required(),
       name: Joi.string().required(),
       price: Joi.string().required(),
-     description: Joi.string().required(),  
+      description: Joi.string().required(),
+      image: Joi.string().uri().optional()
     };
 
     const { value, error } = Joi.object(serviceObject).unknown().validate(data);
 
     if (error) {
-       return Result.fail(error);
+      return Result.fail(error);
     }
 
     return Result.ok(value);
@@ -59,9 +65,9 @@ export class Service{
       ...data,
       id: uuidv4(),
     });
-      
+
     if (validated.isFailure) {
-      
+
       return Result.fail(validated.error);
     }
     return Result.ok(new Service(validated.getValue()));

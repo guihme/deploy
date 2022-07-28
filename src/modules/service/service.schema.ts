@@ -5,12 +5,12 @@ class createServiceProps {
     example: 'Corte',
   })
   name: string;
-  
- @ApiProperty({
+
+  @ApiProperty({
     example: '501695c6-78bd-4610-a86c-9511ac61d8dc',
   })
   customer_id: string;
-  
+
   @ApiProperty({
     example: '20,00',
   })
@@ -20,10 +20,15 @@ class createServiceProps {
     example: 'Corte de cabelo',
   })
   description: string;
+
+  @ApiProperty({
+    example: 'https://image.com.br/2587.jpeg',
+  })
+  image: string;
 }
 
 export const BodyCreateOptions: ApiBodyOptions = {
   type: createServiceProps,
 };
 
-export class ServiceSchema {}
+export class ServiceSchema { }

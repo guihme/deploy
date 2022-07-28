@@ -4,4 +4,5 @@ export class ServiceDTO {
   name: string
   price: string
   description: string
+  image?: string
 }

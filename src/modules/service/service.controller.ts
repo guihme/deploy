@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
+  Put,
   Res,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -27,7 +29,7 @@ export class ServiceController {
     }
 
     let services = result.getValue();
-    let servicesDTO:ServiceDTO[] = [];
+    let servicesDTO: ServiceDTO[] = [];
 
     for (let service of services) {
       servicesDTO.push(service.toDTO());
@@ -41,6 +43,23 @@ export class ServiceController {
   @Post()
   async create(@Body() body: CreateServiceProps, @Res() res: Response) {
     const result = await this.serviceService.createAndSave(body);
+    if (result.isFailure) {
+      res.status(400).send(result.errorValue());
+      return;
+    }
+    const service = result.getValue();
+
+    res.status(200).send(service.toDTO());
+  }
+
+  @ApiOperation({ summary: 'update a Service' })
+  @ApiBody(BodyCreateOptions)
+  @Put(":id")
+  async update(
+    @Body() body: CreateServiceProps,
+    @Param("id") id: string,
+    @Res() res: Response) {
+    const result = await this.serviceService.update(id, body);
     if (result.isFailure) {
       res.status(400).send(result.errorValue());
       return;
