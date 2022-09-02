@@ -26,8 +26,8 @@ export class ServiceService {
     return await this.serviceRepository.all();
   }
 
-  async findByEmail(id: string): Promise<Result<Service>> {
-
+  async findOne(id: string): Promise<Result<Service>> {
+  
     return await this.serviceRepository.findById(id);
   }
 
@@ -47,5 +47,9 @@ export class ServiceService {
     }
 
     return build;
+  }
+
+  async delete(id: string): Promise<Result<void>> {
+    return this.serviceRepository.delete(id);
   }
 }

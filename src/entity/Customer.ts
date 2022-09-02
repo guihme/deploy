@@ -7,22 +7,26 @@ import { Service } from './Service';
 export interface CreateCustomerProps {
     name: string;
     phone: string;
-    service_id: string;}
+}
 
 export interface CustomerProps {
     id: string;
     name: string;
     phone: string;
-    service_id: string; // services: Service[];
+    
 }
 
 export class Customer {
+
+    protected readonly _id: string;
+
     constructor(protected props: CustomerProps) {
         this.props = props;
+        this._id = props.id;
     }
     
     get id(): string{
-        return this.props.id;
+        return this._id;
     }
       
     get name(): string{
@@ -33,17 +37,13 @@ export class Customer {
         return this.props.phone;
     }
 
-    get service_id(): string{
-        return this.props.service_id;
-    }
 
     static validate(data: CustomerProps): Result<CustomerProps> {
 
         const customerObject = {
           id: Joi.string().guid({ version: "uuidv4" }),
           name: Joi.string().required(),
-          phone: Joi.string().required(),
-          service_id: Joi.string().required(),  
+          phone: Joi.string().required(), 
         };
 
         const { value, error } = Joi.object(customerObject).unknown().validate(data);

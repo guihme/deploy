@@ -8,7 +8,7 @@ export interface CreateServiceProps {
   name: string;
   price: string;
   description: string;
-  image?: string | null;
+  image?: string;
 }
 
 interface ServiceProps extends CreateServiceProps {
@@ -20,9 +20,6 @@ export class Service {
     this.props = props;
   }
 
-  get id(): string {
-    return this.props.id;
-  }
   get customer_id(): string {
     return this.props.customer_id;
   }
@@ -39,7 +36,7 @@ export class Service {
     return this.props.description;
   }
 
-  get image(): string | undefined | null {
+  get image(): string | undefined {
     return this.props.image;
   }
 

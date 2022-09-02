@@ -24,8 +24,15 @@ export interface UserProps {
   admin: boolean | undefined;
 }
 export class User {
+  protected readonly _id: string;
+
   constructor(protected props: UserProps) {
     this.props = props;
+    this._id = props.id;
+  }
+
+  get id(): string {
+    return this._id;
   }
 
   get name(): string {

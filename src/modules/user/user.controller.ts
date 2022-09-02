@@ -1,8 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
+  Put,
   Res,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -46,7 +49,50 @@ export class UserController {
       return;
     }
     const user = result.getValue();
+    
+    res.status(200).send(user.toDTO());
+  }
+
+  @ApiOperation({ summary: 'Get an User' })
+  @Get(":id")
+  async findOne(@Param("id") id: string, @Res() res: Response){
+    const result = await this.userService.findOne(id);
+    if (result.isFailure) {
+      res.status(400).send(result.errorValue());
+      return;
+    }
+    const user = result.getValue();
 
     res.status(200).send(user.toDTO());
+  }
+
+  @ApiOperation({ summary: 'Update an User' })
+  @ApiBody(BodyCreateOptions)
+  @Put(":id")
+  async update(
+    @Body() data: CreateUserProps,
+    @Param("id") id: string,
+    @Res() res: Response
+  ) {
+    const result = await this.userService.update(data, id);
+    if (result.isFailure) {
+      res.status(400).send(result.errorValue());
+      return;
+    }
+    const user = result.getValue();
+
+    res.status(200).send(user.toDTO());
+  }
+
+  @ApiOperation({ summary: "Remove an User" })
+  @Delete(":id")
+  async remove(@Param("id") id: string, @Res() res: Response) {
+    const result = await this.userService.delete(id);
+    if (result.isFailure) {
+      res.status(400).send(result.errorValue());
+      return;
+    }
+
+    res.status(200).send();
   }
 }

@@ -13,15 +13,14 @@ export class ORMCustomer {
     @Column({ type: 'varchar', length: 64, nullable: false })
     phone!: string;
 
-    @Column({ type: 'varchar', length: 64, nullable: false })
-    service_id!: string;
+
 
     static import(instance: Customer): ORMCustomer {
         const entity = new ORMCustomer();
-
+        
+        entity.id = instance.id;
         entity.name = instance.name;
         entity.phone = instance.phone;
-        entity.service_id = instance.service_id;
 
         return entity;
     }
@@ -31,7 +30,6 @@ export class ORMCustomer {
             id: this.id,
             name: this.name,
             phone: this.phone,
-            service_id: this.service_id,
         };
 
         const buildCustomer = Customer.build(retrivedData);
