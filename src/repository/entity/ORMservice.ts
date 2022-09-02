@@ -10,7 +10,7 @@ export class ORMService {
   @Column({ type: 'varchar', length: 64, nullable: false })
   customer_id!: string;
 
-  @Column({ type: 'varchar', length: 64, nullable: false, unique: true })
+  @Column({ type: 'varchar', length: 64, nullable: false })
   name!: string;
 
   @Column({ type: 'varchar', length: 64, nullable: false })
