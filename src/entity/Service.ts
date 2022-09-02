@@ -48,7 +48,6 @@ export class Service {
       name: Joi.string().required(),
       price: Joi.string().required(),
       description: Joi.string().required(),
-      image: Joi.string().uri().optional()
     };
 
     const { value, error } = Joi.object(serviceObject).unknown().validate(data);
