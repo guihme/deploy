@@ -19,9 +19,16 @@ export interface SchedulingProps {
 }
 
 export class Scheduling {
+  protected readonly _id: string;
+
   constructor(protected props: SchedulingProps) {
-  this.props = props;
-}
+    this.props = props;
+    this._id = props.id;
+  }
+
+  get id(): string {
+    return this._id;
+  }
 
   get user_id(): string{
     return this.props.user_id;

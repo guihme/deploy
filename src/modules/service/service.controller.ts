@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -38,6 +39,19 @@ export class ServiceController {
     res.status(200).send(servicesDTO);
   }
 
+  @ApiOperation({ summary: 'Get a Service' })
+  @Get(":id")
+  async findOne(@Param("id") id: string, @Res() res: Response) {
+    const result = await this.serviceService.findOne(id);
+    if (result.isFailure) {
+      res.status(400).send(result.errorValue());
+      return;
+    }
+    const service = result.getValue();
+
+    res.status(200).send(service.toDTO());
+  }
+
   @ApiOperation({ summary: 'Create a Service' })
   @ApiBody(BodyCreateOptions)
   @Post()
@@ -67,5 +81,17 @@ export class ServiceController {
     const service = result.getValue();
 
     res.status(200).send(service.toDTO());
+  }
+
+  @ApiOperation({ summary: "Remove a Service" })
+  @Delete(":id")
+  async remove(@Param("id") id: string, @Res() res: Response) {
+    const result = await this.serviceService.delete(id);
+    if (result.isFailure) {
+      res.status(400).send(result.errorValue());
+      return;
+    }
+
+    res.status(200).send();
   }
 }

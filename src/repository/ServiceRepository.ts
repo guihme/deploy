@@ -10,7 +10,7 @@ export class ServiceRepository {
   constructor(
     @InjectRepository(ORMService)
     private readonly repository: Repository<ORMService>,
-  ) {}
+  ) { }
 
   async save(data: Service): Promise<Result<void>> {
     try {
@@ -44,4 +44,19 @@ export class ServiceRepository {
     }
     return Result.ok(serviceORM.export());
   }
+
+  async delete(id: string): Promise<Result<void>> {
+    try {
+      const service = await this.repository.findOne({id: id});
+      if (!service) return Result.fail(new Error());
+      await this.repository.delete(service);
+      return Result.ok<void>();
+    } catch (e) {
+      if (e instanceof QueryFailedError) {
+        return Result.fail(new Error());
+      }
+      throw e;
+    }
+  }
+
 }

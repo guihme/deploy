@@ -23,6 +23,7 @@ export class ORMScheduling {
   static import(instance: Scheduling): ORMScheduling {
     const entity = new ORMScheduling();
 
+    entity.id = instance.id;
     entity.user_id = instance.user_id;
     entity.service_id = instance.service_id;
     entity.date = instance.date;

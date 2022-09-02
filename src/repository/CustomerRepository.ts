@@ -36,11 +36,39 @@ export class CustomerRepository {
         return Result.ok(customersEntity)
     }
 
-    async findByID(id: string): Promise<Result<Customer>> {
+    async findById(id: string): Promise<Result<Customer>> {
         const customerORM = await this.repository.findOne({ id: id });
         if (!customerORM) {
           return Result.fail(new Error("Not found!"));
         }
         return Result.ok(customerORM.export());
+      }
+
+      async delete(id: string): Promise<Result<void>> {
+        try {
+          const customer = await this.repository.findOne({id: id});
+          if (!customer) return Result.fail(new Error());
+          await this.repository.delete(customer);
+          return Result.ok<void>();
+        } catch (e) {
+          if (e instanceof QueryFailedError) {
+            return Result.fail(new Error());
+          }
+          throw e;
+        }
+      }
+
+      async update(data: Customer): Promise<Result<void>> {
+        try {
+          await this.repository.update(data.id, ORMCustomer.import(data));
+    
+          return Result.ok();
+        } catch (e) {
+          if (e instanceof QueryFailedError) {
+    
+            return Result.fail(e);
+          }
+          throw e;
+        }
       }
 }

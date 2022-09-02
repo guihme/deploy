@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateCustomerProps, Customer } from '../../entity';
 import { Result } from 'src/shared/result';
 import { CustomerRepository } from '../../repository';
+import { CustomerDTO } from 'src/DTO';
 
 @Injectable()
 export class CustomerService {
@@ -25,9 +26,41 @@ export class CustomerService {
     public async getAll(): Promise<Result<Customer[]>> {
       return await this.customerRepository.all();
     }
+
+    async findOne(id: string): Promise<Result<Customer>> {
   
-    async findByID(id: string): Promise<Result<Customer>> {
+      return await this.customerRepository.findById(id);
+    }
+
+    async update(data: CreateCustomerProps, id: string): Promise<Result<Customer>> {
+      let customer = await this.findOne(id);
+
+      if(customer.isFailure) {
+        return Result.fail(customer.error);
+      }
+
+      const customerDTO: CustomerDTO = {
+        id: id,
+        ...data
+      }
+
+      let build = Customer.build(customerDTO);
+
+      if(build.isFailure) {
+        return Result.fail(build.error);
+      }
+
+      const saved = await this.customerRepository.save(build.getValue());
   
-      return await this.customerRepository.findByID(id);
+      if(saved.isFailure) {
+        return Result.fail(new Error("phone already exists."));
+      }
+  
+      return build;
+
+    }
+
+    async delete(id: string): Promise<Result<void>> {
+      return this.customerRepository.delete(id);
     }
   }

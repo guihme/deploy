@@ -2,12 +2,12 @@ import { ApiBodyOptions, ApiProperty } from '@nestjs/swagger';
 
 class createSchedulingProps {
   @ApiProperty({
-    example: 'IF4562DA',
+    example: '501695c6-78bd-4610-a86c-9511ac61d8dc',
   })
   user_id: string;
 
   @ApiProperty({
-    example: '45EGHN12',
+    example: '688b7d04-52dc-4048-8b5a-067309f4ecb0',
   })
   service_id: string;
 

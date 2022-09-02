@@ -1,8 +1,11 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
+    Param,
     Post,
+    Put,
     Res,
   } from '@nestjs/common';
   import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -49,4 +52,48 @@ import {
 
       res.status(200).send(schedule.toDTO());
     }
+
+    @ApiOperation({ summary: 'Get a Schedule' })
+    @Get(":id")
+    async findOne(@Param("id") id: string, @Res() res: Response){
+      const result = await this.schedulingService.findOne(id);
+      if (result.isFailure) {
+        res.status(400).send(result.errorValue());
+        return;
+      }
+      const schedule = result.getValue();
+  
+      res.status(200).send(schedule.toDTO());
+    }
+  
+    @ApiOperation({ summary: 'Update a Schedule' })
+    @ApiBody(BodyCreateOptions)
+    @Put(":id")
+    async update(
+      @Body() data: CreateSchedulingProps,
+      @Param("id") id: string,
+      @Res() res: Response
+    ) {
+      const result = await this.schedulingService.update(data, id);
+      if (result.isFailure) {
+        res.status(400).send(result.errorValue());
+        return;
+      }
+      const schedule = result.getValue();
+  
+      res.status(200).send(schedule.toDTO());
+    }
+  
+    @ApiOperation({ summary: "Remove a Schedule" })
+    @Delete(":id")
+    async remove(@Param("id") id: string, @Res() res: Response) {
+      const result = await this.schedulingService.delete(id);
+      if (result.isFailure) {
+        res.status(400).send(result.errorValue());
+        return;
+      }
+  
+      res.status(200).send();
+    }
+
   }

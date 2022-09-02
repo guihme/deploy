@@ -24,7 +24,7 @@ class createServiceProps {
   @ApiProperty({
     example: 'https://image.com.br/2587.jpeg',
   })
-  image?: string;
+  image: string;
 }
 
 export const BodyCreateOptions: ApiBodyOptions = {

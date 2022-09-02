@@ -30,7 +30,7 @@ export class ORMUser {
 
   static import(instance: User): ORMUser {
     const entity = new ORMUser();
-
+    entity.id = instance.id;
     entity.name = instance.name;
     entity.email = instance.email;
     entity.password = instance.password;

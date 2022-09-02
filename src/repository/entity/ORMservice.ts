@@ -10,7 +10,7 @@ export class ORMService {
   @Column({ type: 'varchar', length: 64, nullable: false })
   customer_id!: string;
 
-  @Column({ type: 'varchar', length: 64, nullable: false })
+  @Column({ type: 'varchar', length: 64, nullable: false, unique: true })
   name!: string;
 
   @Column({ type: 'varchar', length: 64, nullable: false })
@@ -19,12 +19,12 @@ export class ORMService {
   @Column({ type: 'varchar', length: 64, nullable: false })
   description!: string;
 
-  @Column({ type: 'varchar', length: 500, nullable: true })
-  image?: string | null;
+  @Column({ type: 'varchar', length: 64, nullable: true })
+  image?: string;
 
   static import(instance: Service): ORMService {
     const entity = new ORMService();
-    entity.id = instance.id;
+
     entity.customer_id = instance.customer_id;
     entity.name = instance.name;
     entity.price = instance.price;

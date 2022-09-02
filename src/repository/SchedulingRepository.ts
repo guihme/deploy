@@ -37,13 +37,25 @@ export class SchedulingRepository {
     return Result.ok(schedulesEntity);
   }
 
-  /*
-  async findByService(service_id: string): Promise<Result<Scheduling[]>> {
-    
+  async findById(id: string): Promise<Result<Scheduling>> {
+    const schedulingORM = await this.repository.findOne({ id: id });
+    if (!schedulingORM) {
+      return Result.fail(new Error("Not found!"));
+    }
+    return Result.ok(schedulingORM.export());
   }
 
-  async findByDate(date: string): Promnise<Result<Scheduling[]>> {
-
+  async delete(id: string): Promise<Result<void>> {
+    try {
+      const schedule = await this.repository.findOne({id: id});
+      if (!schedule) return Result.fail(new Error());
+      await this.repository.delete(schedule);
+      return Result.ok<void>();
+    } catch (e) {
+      if (e instanceof QueryFailedError) {
+        return Result.fail(new Error());
+      }
+      throw e;
+    }
   }
-  */
 }
