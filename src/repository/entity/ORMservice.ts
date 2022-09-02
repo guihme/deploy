@@ -25,6 +25,7 @@ export class ORMService {
   static import(instance: Service): ORMService {
     const entity = new ORMService();
 
+    entity.id = instance.id;
     entity.customer_id = instance.customer_id;
     entity.name = instance.name;
     entity.price = instance.price;

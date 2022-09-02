@@ -20,6 +20,10 @@ export class Service {
     this.props = props;
   }
 
+  get id(): string {
+    return this.props.id;
+  }
+  
   get customer_id(): string {
     return this.props.customer_id;
   }
