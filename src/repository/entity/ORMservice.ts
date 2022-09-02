@@ -19,7 +19,7 @@ export class ORMService {
   @Column({ type: 'varchar', length: 64, nullable: false })
   description!: string;
 
-  @Column({ type: 'varchar', length: 64, nullable: true })
+  @Column({ type: 'varchar', length: 500, nullable: true })
   image?: string;
 
   static import(instance: Service): ORMService {
